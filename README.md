@@ -78,6 +78,7 @@ A [Makefile](file:///home/moothz/torque-dash/Makefile) is provided to simplify c
 * `make latest-data` - View the 5 most recently uploaded diagnostic telemetry points.
 * `make latest-sessions` - View the 5 most recently created logging sessions.
 * `make latest-users` - View the 5 most recently registered user accounts.
+* `make session` - Generate and update secure, randomized session keys inside `.env`.
 
 #### Local Installation (Development)
 

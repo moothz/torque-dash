@@ -11,7 +11,7 @@ DB_USER ?= postgres
 DB_PASSWORD ?= heslo
 DB_NAME ?= torquedash
 
-.PHONY: help up down restart build logs logs-web logs-db status db-shell db-status latest-data latest-sessions latest-users
+.PHONY: help up down restart build logs logs-web logs-db status db-shell db-status latest-data latest-sessions latest-users session
 
 help:
 	@echo "Available commands:"
@@ -28,6 +28,7 @@ help:
 	@echo "  make latest-data      - Show the 5 latest OBD2 diagnostic log entries"
 	@echo "  make latest-sessions  - Show the 5 latest OBD2 telemetry sessions"
 	@echo "  make latest-users     - Show the 5 latest registered users"
+	@echo "  make session          - Generate and update secure session keys in .env"
 
 up:
 	docker compose up -d
@@ -81,3 +82,17 @@ latest-users:
 	@echo "=== 5 Most Recent Registered Users ==="
 	@docker compose exec -T db psql -U $(DB_USER) -d $(DB_NAME) -c \
 		"SELECT id, email, \"createdAt\" FROM \"Users\" ORDER BY \"createdAt\" DESC LIMIT 5;"
+
+session:
+	@if [ ! -f .env ]; then echo "No .env file found. Copying .env.example..."; cp .env.example .env; fi
+	@KEY1=$$(openssl rand -hex 16) && \
+	 KEY2=$$(openssl rand -hex 16) && \
+	 KEY3=$$(openssl rand -hex 16) && \
+	 KEYS="$$KEY1,$$KEY2,$$KEY3" && \
+	 if grep -q "^SESSION_KEYS=" .env; then \
+	     sed -i "s|^SESSION_KEYS=.*|SESSION_KEYS=$$KEYS|" .env; \
+	 else \
+	     echo "SESSION_KEYS=$$KEYS" >> .env; \
+	 fi
+	@echo "Session keys in .env successfully randomized!"
+
