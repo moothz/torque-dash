@@ -22,6 +22,16 @@ app.use(session({
     keys: config.session.keys,
     maxAge: 24 * 60 * 60 * 1000
 }));
+// Compatibility middleware for Passport v0.6+ and cookie-session
+app.use((req, res, next) => {
+    if (req.session && !req.session.regenerate) {
+        req.session.regenerate = (cb) => { cb(); };
+    }
+    if (req.session && !req.session.save) {
+        req.session.save = (cb) => { cb(); };
+    }
+    next();
+});
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
