@@ -11,9 +11,13 @@ class UserController {
         })(req, res, next);
     }
     static logout(req, res) {
-        req.logout();
-        req.flash('success', 'You have been logged out.');
-        res.redirect('/login');
+        req.logout((err) => {
+            if (err) {
+                console.error(err);
+            }
+            req.flash('success', 'You have been logged out.');
+            res.redirect('/login');
+        });
     }
     static async register(req, res) {
         try {

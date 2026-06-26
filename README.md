@@ -7,7 +7,16 @@
   </p>
 </p>
 
+## Fork Info (Modernized)
 
+This repository is a modernized fork of the original torque-dash project, updated to run on modern platforms:
+- **Node.js**: Updated for Node.js v20+ and v26+ compatibility.
+- **Dependencies**: Upgraded Sequelize (v6), Joi (v17), Express (v4), Passport (v0.7), and other packages to current versions.
+- **Security & Reliability**: Replaced native `bcrypt` with `bcryptjs` to avoid native build-essential compilation errors during installation.
+- **Docker Compose**: Containerized the application and added a local database stack (PostgreSQL 16) with automated setup.
+- **Environment Configuration**: Configured with a `.env` file to manage variables and external ports easily.
+
+---
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -19,8 +28,6 @@
   * [Logging Data](#logging-data)
 * [Functionality](#functionality)
 * [License](#license)
-
-
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -37,51 +44,68 @@ This project was built with the help of
 * [Sequelize.js](http://docs.sequelizejs.com/) - Node.js ORM for relational databases 
 * [Leaflet.js](https://leafletjs.com/) - javascript library for interactive maps
 * [Chart.js](https://www.chartjs.org/) - javascript charting library
-* ...
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get started using the application you first need a hosting server and postgres database. To try out the app for free, I recommend using a [Heroku Free](https://www.heroku.com/free) Tier account.
+To get started using the application, we recommend deploying it using Docker Compose.
 
 ### Installation
-#### With Heroku
 
-1. Create a fork of the repo.
-2. Create a new app in Heroku with a postgres addon
-3. Enable GitHub integration for deployment and connect the forked repo to your app ([More info](https://devcenter.heroku.com/articles/github-integration))
-4. Deploy the application from heroku.
+#### With Docker Compose (Recommended)
 
-#### Local
-
-1. Clone the repo
+1. Clone or fork this repository:
 ```sh
-git clone https://github.com/davekrejci/torque-dash.git
+git clone https://github.com/moothz/torque-dash.git
+cd torque-dash
 ```
-2. Install NPM packages
+2. Configure your environment in `.env`. You can adjust the external port mapping (`EXTERNAL_PORT`), internal listening port (`PORT`), and database settings.
+3. Start the Docker Compose stack:
+```sh
+docker compose up -d --build
+```
+4. Access the web dashboard at `http://localhost:<EXTERNAL_PORT>` (default port is `3000`).
+
+#### Makefile Commands
+
+A [Makefile](file:///home/moothz/torque-dash/Makefile) is provided to simplify container management and inspection:
+* `make up` - Start the container stack.
+* `make down` - Stop and remove the containers.
+* `make restart` - Restart all services.
+* `make status` - Check the status of the containers.
+* `make logs` - Follow all container logs.
+* `make db-status` - Query table row counts and storage details.
+* `make latest-data` - View the 5 most recently uploaded diagnostic telemetry points.
+* `make latest-sessions` - View the 5 most recently created logging sessions.
+* `make latest-users` - View the 5 most recently registered user accounts.
+
+#### Local Installation (Development)
+
+1. Install modern NPM packages:
 ```sh
 npm install
 ```
-3. Configure your database connection URI either in your environment variables or in `config.js`
-```JS
-uri: process.env.DATABASE_URL || 'your connection URI'
+2. Create and configure your database connection string in a `.env` file:
+```env
+PORT=3000
+DATABASE_URL=postgres://postgres:password@localhost:5432/torquedash
+SESSION_KEYS=your-secret-key-1,your-secret-key-2
 ```
-4. Start the server
+3. Ensure you have a local PostgreSQL instance running and matching the `DATABASE_URL` settings.
+4. Run the development server:
 ```sh
-npm start
+npm run dev
 ```
 
 ### Logging data
 
 To be able to log data from Torque Pro:
 
-1. Register an account in torqueDASH
-2. In Torque Pro settings set the user email address to the same as your accounts.
-3. In Torque Pro settings set the Webserver URL to the */api/upload* path
+1. Register an account in torqueDASH.
+2. In Torque Pro settings, set the user email address to the same as your registered account.
+3. In Torque Pro settings, set the Webserver URL to point to the `/api/upload` endpoint of your deployment:
 ```
-https://yourappname.herokuapp.com/api/upload
+http://<your-server-ip-or-domain>:<port>/api/upload
 ```
 
 <!-- Functionality -->
@@ -118,7 +142,6 @@ Provides options for sharing logged data.
 2. Request forwarding - You may list other server URLs to which the data sent from Torque Pro will be further forwarded (eg. official Torque Web Viewer)
 
 ![](imgs/share.png)
-
 
 <!-- LICENSE -->
 ## License

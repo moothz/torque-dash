@@ -1,0 +1,31 @@
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${EXTERNAL_PORT:-3000}:${PORT:-3000}"
+    environment:
+      - PORT=${PORT:-3000}
+      - DATABASE_URL=postgres://${DB_USER:-postgres}:${DB_PASSWORD:-heslo}@db:5432/${DB_NAME:-torquedash}
+      - SESSION_KEYS=${SESSION_KEYS}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-heslo}
+      - POSTGRES_DB=${DB_NAME:-torquedash}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
