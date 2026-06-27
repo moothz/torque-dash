@@ -671,6 +671,19 @@ a.dropdown-item.active {
   .deleteURL .fa-times:hover {
       color: var(--accent-color);
   }
+
+/* Drag and Drop Zone styling */
+.drop-zone {
+    cursor: pointer;
+}
+.drop-zone:hover, .drop-zone.dragover {
+    background-color: #e9ecef !important;
+    border-color: #0056b3 !important;
+    transform: scale(1.01);
+}
+.cursor-pointer {
+    cursor: pointer;
+}
   
 
 

@@ -28,6 +28,7 @@ router.patch('/sessions/filter/:sessionId', authenticate, SessionController.filt
 router.patch('/sessions/cut/:sessionId', authenticate, SessionController.cut);
 router.post('/sessions/copy/:sessionId', authenticate, SessionController.copy);
 router.post('/sessions/join/:sessionId', authenticate, SessionController.join);
+router.post('/sessions/import', authenticate, SessionController.importCSV);
 
 
 module.exports = router;

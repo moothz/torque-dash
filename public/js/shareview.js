@@ -151,8 +151,12 @@ let MapViewModule = {
             this.$pidSelectChart.append(`<option>${pid}</option>`)
             
         });
-        // select first value for map
-        this.$pidSelectMap[0].selectedIndex = 0;
+        // select Speed (OBD) by default, or fallback to first option
+        if (valueSet.includes("Speed (OBD)")) {
+            this.$pidSelectMap.val("Speed (OBD)");
+        } else {
+            this.$pidSelectMap[0].selectedIndex = 0;
+        }
         // refresh select
         this.$chosenSelects.trigger("chosen:updated");
     },

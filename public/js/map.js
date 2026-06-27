@@ -24,7 +24,7 @@ class Map {
             center: [49.82, 18.26],
             zoom: 10,
             zoomControl: false,
-            layers: [wikimediaTileLayer]
+            layers: [cartoDBVoyager]
         }
         
         // initialize the map in the container
@@ -41,8 +41,6 @@ class Map {
         
         // Add base tile layer controls
         let tileLayers = {
-            "Wikimedia": wikimediaTileLayer,
-            "Open Map Surfer Roads": openMapSurferRoadsTileLayer,
             "CartoDB Voyager": cartoDBVoyager,
             "Esri World Imagery": esriWorldImagery
         }

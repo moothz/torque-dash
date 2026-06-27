@@ -66,8 +66,17 @@ let MapViewModule = {
         this.createChart();
         this.cacheDOM();
         this.bindEvents();
-        // Select first session
-        this.selectSession(this.sessions[this.sessions.length - 1].id);
+        // Select session: check query parameter first, fallback to last session
+        let sessionToSelect = this.sessions[this.sessions.length - 1].id;
+        let urlParams = new URLSearchParams(window.location.search);
+        let sessionParam = urlParams.get('session');
+        if (sessionParam) {
+            let foundSession = this.sessions.find(s => s.id == sessionParam);
+            if (foundSession) {
+                sessionToSelect = foundSession.id;
+            }
+        }
+        this.selectSession(sessionToSelect);
         //activate chosen selects
         this.$chosenSelects.chosen();
     },
@@ -148,8 +157,12 @@ let MapViewModule = {
             this.$pidSelectChart.append(`<option>${pid}</option>`)
             
         });
-        // select first value for map
-        this.$pidSelectMap[0].selectedIndex = 0;
+        // select Speed (OBD) by default, or fallback to first option
+        if (valueSet.includes("Speed (OBD)")) {
+            this.$pidSelectMap.val("Speed (OBD)");
+        } else {
+            this.$pidSelectMap[0].selectedIndex = 0;
+        }
         // refresh select
         this.$chosenSelects.trigger("chosen:updated");
     },

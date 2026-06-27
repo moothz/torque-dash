@@ -6,6 +6,7 @@ const Op = require('../models').Sequelize.Op;
 const moment = require('moment');
 require('moment-duration-format');
 const shortid = require('shortid');
+const pidNames = require('../torquekeys.json');
 
 class SessionController {
     static async delete(req, res) {
@@ -311,6 +312,182 @@ class SessionController {
             res.sendStatus(200);
         }
         catch (err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
+    }
+    static async importCSV(req, res) {
+        try {
+            const { name, csv } = req.body;
+            if (!name || !csv) {
+                return res.status(400).send('Name and CSV content are required.');
+            }
+
+            const pidInverseMap = {};
+            for (const [key, valName] of Object.entries(pidNames)) {
+                pidInverseMap[valName.toLowerCase()] = key;
+            }
+
+            function getPidKey(header) {
+                const cleanHeader = header.trim();
+                const cleanHeaderLower = cleanHeader.toLowerCase();
+                
+                if (pidInverseMap[cleanHeaderLower]) {
+                    return pidInverseMap[cleanHeaderLower];
+                }
+                
+                const stripped = cleanHeader.replace(/\([^)]*\)$/, '').trim().toLowerCase();
+                if (pidInverseMap[stripped]) {
+                    return pidInverseMap[stripped];
+                }
+                
+                return null;
+            }
+
+            // Split by carriage return or newline
+            const lines = csv.split(/\r?\n/);
+            if (lines.length === 0) {
+                return res.status(400).send('CSV content is empty.');
+            }
+            
+            // Find the header line (first non-empty line)
+            let headerLine = "";
+            let headerIndex = 0;
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].trim() !== "") {
+                    headerLine = lines[i];
+                    headerIndex = i;
+                    break;
+                }
+            }
+            
+            if (!headerLine) {
+                return res.status(400).send('CSV header not found.');
+            }
+            
+            const parseCSVLine = (line) => {
+                return line.split(',').map(s => s.trim());
+            };
+            
+            const headers = parseCSVLine(headerLine);
+            
+            // Map header indexes
+            let timeColIdx = -1;
+            let latColIdx = -1;
+            let lonColIdx = -1;
+            const pidCols = [];
+            
+            for (let i = 0; i < headers.length; i++) {
+                const header = headers[i];
+                const headerLower = header.toLowerCase();
+                
+                if (headerLower === 'device time') {
+                    timeColIdx = i;
+                } else if (headerLower === 'gps time') {
+                    if (timeColIdx === -1) timeColIdx = i;
+                } else if (headerLower === 'latitude') {
+                    latColIdx = i;
+                } else if (headerLower === 'gps latitude(°)' || headerLower === 'gps latitude') {
+                    if (latColIdx === -1) latColIdx = i;
+                } else if (headerLower === 'longitude') {
+                    lonColIdx = i;
+                } else if (headerLower === 'gps longitude(°)' || headerLower === 'gps longitude') {
+                    if (lonColIdx === -1) lonColIdx = i;
+                } else {
+                    const pidKey = getPidKey(header);
+                    if (pidKey) {
+                        if (pidKey === 'kff1005') {
+                            if (lonColIdx === -1) lonColIdx = i;
+                        } else if (pidKey === 'kff1006') {
+                            if (latColIdx === -1) latColIdx = i;
+                        } else {
+                            pidCols.push({ index: i, pidKey });
+                        }
+                    }
+                }
+            }
+            
+            if (timeColIdx === -1 || latColIdx === -1 || lonColIdx === -1) {
+                return res.status(400).send('CSV missing required columns: Time, Latitude or Longitude.');
+            }
+            
+            const logsData = [];
+            const seenTimestamps = new Set();
+            
+            for (let i = headerIndex + 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line === "") continue;
+                
+                // Skip header repetitions
+                if (line.toLowerCase().startsWith('gps time') || line.toLowerCase().startsWith('device time')) {
+                    continue;
+                }
+                
+                const row = parseCSVLine(line);
+                if (row.length < headers.length) continue;
+                
+                const timeVal = row[timeColIdx];
+                const latVal = parseFloat(row[latColIdx]);
+                const lonVal = parseFloat(row[lonColIdx]);
+                
+                if (isNaN(latVal) || isNaN(lonVal)) continue;
+                
+                let dateVal = moment(timeVal, 'DD-MMM-YYYY HH:mm:ss.SSS');
+                if (!dateVal.isValid()) {
+                    dateVal = moment(timeVal, 'ddd MMM DD HH:mm:ss [GMT]Z YYYY');
+                }
+                if (!dateVal.isValid()) {
+                    dateVal = moment(timeVal);
+                }
+                
+                if (!dateVal.isValid()) continue;
+                
+                const timestamp = dateVal.format('YYYY-MM-DD HH:mm:ss');
+                
+                if (seenTimestamps.has(timestamp)) {
+                    continue;
+                }
+                seenTimestamps.add(timestamp);
+                
+                const values = {};
+                for (const col of pidCols) {
+                    const val = row[col.index];
+                    if (val !== undefined && val !== null && val !== "" && val !== "-") {
+                        values[col.pidKey] = val;
+                    }
+                }
+                
+                logsData.push({
+                    timestamp,
+                    lat: latVal,
+                    lon: lonVal,
+                    values
+                });
+            }
+
+            if (logsData.length === 0) {
+                return res.status(400).send('No valid log records found in CSV.');
+            }
+
+            // Create session and logs in transaction
+            await sequelize.transaction(async (t) => {
+                const sessionRecord = await Session.create({
+                    sessionId: shortid.generate(),
+                    name: name,
+                    userId: req.user.id
+                }, { transaction: t });
+
+                // Map sessionId to logs
+                const logsWithSession = logsData.map(log => ({
+                    ...log,
+                    sessionId: sessionRecord.id
+                }));
+
+                await Log.bulkCreate(logsWithSession, { transaction: t });
+            });
+
+            res.sendStatus(200);
+        } catch (err) {
             console.log(err);
             res.sendStatus(500);
         }

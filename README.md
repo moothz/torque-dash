@@ -16,6 +16,21 @@ This repository is a modernized fork of the original torque-dash project, update
 - **Docker Compose**: Containerized the application and added a local database stack (PostgreSQL 16) with automated setup.
 - **Environment Configuration**: Configured with a `.env` file to manage variables and external ports easily.
 
+### New Features
+
+- **CSV Log Import**: Allows importing Torque Pro CSV logs directly from the web interface.
+  - **Drag & Drop Modal**: Accessible from a new "Import CSV" button next to the Overview table search field, with a drag-and-drop file upload zone.
+  - **Live Column Validation**: Instantly verifies that the uploaded file contains the required columns (Time, Latitude, Longitude) before importing.
+  - **Interactive Preview**: Renders a local visual preview showing the first 5 records of the CSV file.
+  - **Smart Mapping & Unit Cleansing**: Automatically cleans unit suffixes from column headers (e.g. `(g/s)`, `(%)`, `(°C)`) and maps them to their respective PIDs.
+  - **Duplicate Prevention & Transactional Safety**: Deduplicates telemetry records sharing the same timestamp, and runs the entire session and log creation inside a secure database transaction.
+- **Improved Map View & Layers**:
+  - Changed the default map provider to **CartoDB Voyager** to guarantee a working, high-performance base map.
+  - Excluded broken map layer providers (Wikimedia and Open Map Surfer Roads) from the interface.
+  - Added an **Eye Icon link** in the Overview table next to each session name, taking you directly to that session in the **Map View**.
+  - Configured **Map View** to load a specific session automatically if passed as a `session` query parameter (e.g., `/mapview?session=12`).
+  - Set the default selected telemetry parameter on the map to `"Speed (OBD)"` when available.
+
 ---
 
 <!-- TABLE OF CONTENTS -->
