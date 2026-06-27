@@ -16,29 +16,27 @@ This repository is a modernized fork of the original torque-dash project, update
 - **Docker Compose**: Containerized the application and added a local database stack (PostgreSQL 16) with automated setup.
 - **Environment Configuration**: Configured with a `.env` file to manage variables and external ports easily.
 
+### Accessing
+Currently avaiable for testing/using on (https://torque.moothz.win/)[https://torque.moothz.win]
+ - **Torque URL**: `https://torque.moothz.win/api/upload`
+ - Use the same email of the registration (no need to be a valid email)
+
 ### New Features
 
 - **CSV Log Import**: Allows importing Torque Pro CSV logs directly from the web interface.
   - **Drag & Drop Modal**: Accessible from a new "Import CSV" button next to the Overview table search field, with a drag-and-drop file upload zone.
-  - **Live Column Validation**: Instantly verifies that the uploaded file contains the required columns (Time, Latitude, Longitude) before importing.
-  - **Interactive Preview**: Renders a local visual preview showing the first 5 records of the CSV file.
   - **Smart Mapping & Unit Cleansing**: Automatically cleans unit suffixes from column headers (e.g. `(g/s)`, `(%)`, `(°C)`) and maps them to their respective PIDs.
   - **Duplicate Prevention & Transactional Safety**: Deduplicates telemetry records sharing the same timestamp, and runs the entire session and log creation inside a secure database transaction.
 - **Improved Map View & Layers**:
-  - Changed the default map provider to **CartoDB Voyager** to guarantee a working, high-performance base map.
-  - Excluded broken map layer providers (Wikimedia and Open Map Surfer Roads) from the interface.
-  - Added an **Eye Icon link** in the Overview table next to each session name, taking you directly to that session in the **Map View**.
-  - Configured **Data View** to load a specific session automatically if passed as a `session` query parameter (e.g., `/mapview?session=12`).
-  - Set the default selected telemetry parameter on the map to `"Speed (OBD)"` when available.
+  - Changed the default map provider to **CartoDB Voyager** to guarantee a working, high-performance base map and excluded broken map layer providers (Wikimedia and Open Map Surfer Roads) from the interface.
+  - Added **links** in the Overview table next to each session name, taking you directly to that session in the **Data View**.
 - **Bi-Directional Chart Scaling Multipliers**:
   - Allows applying scaling factors (from `0.03x` up to `20x`, skipping `0`) directly to telemetry lines in the chart using an interactive slider popover.
-  - Automatically remembers chosen multipliers and active PID selections across sessions using cookies.
   - Keeps chart tooltips clean by displaying only the original, unscaled telemetry values.
 - **Internationalization & Localization (i18n)**:
   - Adds full support for **English** and **Português (BR)**, with translation dictionaries defined in simple JSON files.
   - Features a global language selector dropdown in the top navigation bar, persisting the chosen preference in the session.
   - Utilizes a robust client-side translation helper that dynamically strips unit suffixes and OBD/ECU prefixes case-insensitively for clean PID name display.
-  - Standardized interface terminology, renaming "Map View" / "Visualização do Mapa" to "Data View" / "Ver Dados" for improved clarity.
 
 ---
 
