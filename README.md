@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="left">
-    <img src="imgs/logo.png" alt="Logo" width="350" height="55">
+    <img src="imgs/logo.png" alt="Logo" width="350" height="68">
   <p align="left">
     A web application for uploading and presenting real-time diagnostic automobile data (OBD2) logged by Torque android app.
   </p>
