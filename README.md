@@ -17,7 +17,7 @@ This repository is a modernized fork of the original torque-dash project, update
 - **Environment Configuration**: Configured with a `.env` file to manage variables and external ports easily.
 
 ### Accessing
-Currently avaiable for testing/using on [https://torque.moothz.win/])https://torque.moothz.win)
+Currently avaiable for testing/using on [https://torque.moothz.win/](https://torque.moothz.win)
  - **Torque URL**: `https://torque.moothz.win/api/upload`
  - Use the same email of the registration (no need to be a valid email)
 
