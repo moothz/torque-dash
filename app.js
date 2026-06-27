@@ -37,14 +37,43 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Set templating engine
+const fs = require('fs');
+const translations = {
+    en: JSON.parse(fs.readFileSync(path.join(__dirname, 'locales/en.json'), 'utf8')),
+    'pt-br': JSON.parse(fs.readFileSync(path.join(__dirname, 'locales/pt-br.json'), 'utf8'))
+};
+
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
+    
+    if (req.query.lang) {
+        req.session.lang = req.query.lang;
+    }
+    
+    const lang = req.session.lang || 'en';
+    res.locals.lang = lang;
+    res.locals.isPtBr = (lang === 'pt-br');
+    res.locals.isEn = (lang === 'en');
+    res.locals.translations = translations[lang] || translations['en'];
     next();
 });
 
-// Set templating engine
-app.engine('hbs', engine({defaultLayout: 'main', extname: 'hbs'}));
+app.engine('hbs', engine({
+    defaultLayout: 'main', 
+    extname: 'hbs',
+    helpers: {
+        __: function (key, options) {
+            const root = (options && options.data && options.data.root) || {};
+            const translationsMap = root.translations || {};
+            return translationsMap[key] !== undefined ? translationsMap[key] : key;
+        },
+        json: function (context) {
+            return JSON.stringify(context);
+        }
+    }
+}));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/views'));
 

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-6 my-1">
                 <div class="card p-4 border-light bg-light">
-                    <small class="mb-2 badge badge-pill badge-light">Toggle sharing</small>
+                    <small class="mb-2 badge badge-pill badge-light">{{__ "Toggle sharing"}}</small>
                     <label class="switch">
                         <input id="switch" type="checkbox">
                         <span class="slider round"></span>
@@ -15,12 +15,12 @@
             </div>
             <div class="col-md-6 my-1">
                 <div class="card p-4 border-light bg-light">
-                    <small class="mb-2 badge badge-pill badge-light">Forward requests</small>
+                    <small class="mb-2 badge badge-pill badge-light">{{__ "Forward requests"}}</small>
                     <form id="forwardForm" action="">
                         <div class="input-group">
                         <input type="url" name="forwardUrlInput" class="form-control" id="forwardInput" required>
                         <div class="input-group-append">
-                        <input type="submit" class="btn btn-primary" value="Add">
+                        <input type="submit" class="btn btn-primary" value="{{__ "Add"}}">
                         </div>
                         </div>
                     </form>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{lang}}">
 
 <head>
     <meta charset="UTF-8">
@@ -21,6 +21,38 @@
     {{{ body }}}
 
     <script src="/js/lib/jquery-3.3.1.min.js"></script>
+    <script>
+        window.translations = {{{json translations}}};
+        window.currentLang = "{{lang}}";
+        window.__ = function(key) {
+            if (!key) return "";
+            if (!window.translations) return key;
+            if (window.translations[key] !== undefined) return window.translations[key];
+            
+            let lookupKey = String(key).trim();
+            
+            // Case-insensitive direct match
+            let lowerKey = lookupKey.toLowerCase();
+            for (let k in window.translations) {
+                if (k.toLowerCase() === lowerKey) {
+                    return window.translations[k];
+                }
+            }
+            
+            // Handle ECU prefix: e.g. "ECU(7E9): Engine RPM(rpm)"
+            let ecuMatch = lookupKey.match(/^ECU\([^)]+\):\s*(.*)$/i);
+            if (ecuMatch) {
+                let baseKey = ecuMatch[1].trim();
+                let lowerBase = baseKey.toLowerCase();
+                for (let k in window.translations) {
+                    if (k.toLowerCase() === lowerBase) {
+                        return "ECU: " + window.translations[k];
+                    }
+                }
+            }
+            return key;
+        };
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.3.5/split.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="/js/lib/bootstrap.bundle.min.js"></script>
@@ -87,6 +119,17 @@
         <script src="/js/share.js"></script>
     {{/if}}
 
+    <script>
+        $(document).ready(function() {
+            $('.lang-select-btn').on('click', function(e) {
+                e.preventDefault();
+                let lang = $(this).data('lang');
+                let url = new URL(window.location.href);
+                url.searchParams.set('lang', lang);
+                window.location.href = url.toString();
+            });
+        });
+    </script>
 </body>
 
 </html>

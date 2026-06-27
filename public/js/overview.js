@@ -75,6 +75,17 @@ let overviewModule = {
             "bLengthChange": false,
             "pageLength": 5,
             responsive: true,
+            language: {
+                search: window.__("Search") + ":",
+                info: window.__("Showing _START_ to _END_ of _TOTAL_ entries"),
+                infoEmpty: window.__("Showing 0 to 0 of 0 entries"),
+                infoFiltered: "(" + window.__("filtered from _MAX_ total entries") + ")",
+                zeroRecords: window.__("No matching records found"),
+                paginate: {
+                    previous: window.__("Previous"),
+                    next: window.__("Next")
+                }
+            },
             ajax: {
                 url: '/api/sessions',
                 dataSrc: function (json) {
@@ -117,9 +128,9 @@ let overviewModule = {
                         <i class="fas fa-wrench"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="/edit/${data.id}"><i class="fas fa-pen mr-2"></i>Edit</a>
-                          <button class="dropdown-item" data-toggle="modal" data-target="#deleteSessionModal" data-id="${data.id}"><i class="fas fa-trash mr-2"></i>Delete</button>
-                          <button class="dropdown-item" onclick="overviewModule.exportCSV(${data.id})" data-id="${data.id}"><i class="fas fa-download mr-2"></i>Export CSV</button>
+                          <a class="dropdown-item" href="/edit/${data.id}"><i class="fas fa-pen mr-2"></i>${window.__("Edit")}</a>
+                          <button class="dropdown-item" data-toggle="modal" data-target="#deleteSessionModal" data-id="${data.id}"><i class="fas fa-trash mr-2"></i>${window.__("Delete")}</button>
+                          <button class="dropdown-item" onclick="overviewModule.exportCSV(${data.id})" data-id="${data.id}"><i class="fas fa-download mr-2"></i>${window.__("Export CSV")}</button>
                         </div>
                       </div>
                         `
@@ -132,7 +143,7 @@ let overviewModule = {
         // Append Import CSV button next to the search field
         let filterContainer = $('#logTable_filter');
         filterContainer.addClass('d-flex align-items-center justify-content-end flex-wrap');
-        filterContainer.append('<button id="btnOpenImportModal" class="btn btn-success ml-2" data-toggle="modal" data-target="#importCSVModal"><i class="fas fa-file-import mr-1"></i>Import CSV</button>');
+        filterContainer.append('<button id="btnOpenImportModal" class="btn btn-success ml-2" data-toggle="modal" data-target="#importCSVModal"><i class="fas fa-file-import mr-1"></i>' + window.__("Import CSV") + '</button>');
     },
     showLoadOverlay: function() {
         this.$loadOverlay.show();

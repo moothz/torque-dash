@@ -9,8 +9,26 @@
     <div class="navbar-brand mr-auto p-2">
         <a class="navbar-brand" href="/">torque<b>DASH</b></a>
     </div>
-    {{#if loggedIn}}
-    <div class="p-2">
+    
+    <div class="p-2 ml-auto d-flex align-items-center">
+        <!-- Language Selector Dropdown -->
+        <div class="dropdown mr-3">
+            <a class="btn dropdown-toggle text-white border-0" id="langDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+                <i class="fas fa-globe mr-1"></i>
+                <span class="d-none d-md-inline">
+                    {{#if isPtBr}}Português (BR){{else}}English{{/if}}
+                </span>
+                <span class="d-md-none">
+                    {{#if isPtBr}}PT{{else}}EN{{/if}}
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="langDropdown">
+                <a class="dropdown-item lang-select-btn" href="#" data-lang="en">English</a>
+                <a class="dropdown-item lang-select-btn" href="#" data-lang="pt-br">Português (BR)</a>
+            </div>
+        </div>
+
+        {{#if loggedIn}}
         <div class="dropdown">
             <a class="btn dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
@@ -19,9 +37,9 @@
                 <i class="fas fa-user-circle"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/api/users/logout"><i class="fas fa-sign-out-alt"></i> &nbsp; Logout</a>
+                <a class="dropdown-item" href="/api/users/logout"><i class="fas fa-sign-out-alt"></i> &nbsp; {{__ "Logout"}}</a>
             </div>
         </div>
+        {{/if}}
     </div>
-    {{/if}}
 </nav>

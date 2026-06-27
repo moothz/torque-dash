@@ -34,7 +34,7 @@ class SessionController {
                 order: [[ {model: Log, as: 'Logs'}, 'timestamp', 'ASC' ]]
             });
             if(!session) return res.status(404).send('Resource not found');
-            await addStartEndData(session)
+            await addStartEndData(session, req.session.lang)
             res.send(session);
         }
         catch (err) {
@@ -57,7 +57,7 @@ class SessionController {
                 include: [ { model: Log, as: 'Logs' } ],
                 order: [[ {model: Log, as: 'Logs'}, 'timestamp', 'ASC' ]]
             });
-            await addStartEndData(sessions);
+            await addStartEndData(sessions, req.session.lang);
             res.send(sessions);
         }
         catch (err) {
@@ -83,7 +83,7 @@ class SessionController {
                 include: [ { model: Log, as: 'Logs' } ],
                 order: [[ {model: Log, as: 'Logs'}, 'timestamp', 'ASC' ]]
             });
-            await addStartEndData(session);
+            await addStartEndData(session, req.session.lang);
             res.send(session);
         }
         catch (err) {
@@ -106,7 +106,7 @@ class SessionController {
                 include: [ { model: Log, as: 'Logs' } ],
                 order: [[ {model: Log, as: 'Logs'}, 'timestamp', 'ASC' ]]
             });
-            await addStartEndData(sessions);
+            await addStartEndData(sessions, req.session.lang);
             res.send(sessions);
         }
         catch (err) {
@@ -494,7 +494,7 @@ class SessionController {
     }
 }
 
-async function addStartEndData(sessions) {
+async function addStartEndData(sessions, lang = 'en') {
     if(Array.isArray(sessions)){
         for (const session of sessions) {
             const firstLog = await Log.findAll({
@@ -511,11 +511,30 @@ async function addStartEndData(sessions) {
                 },
                 order: [ [ 'timestamp', 'DESC' ]],
             });
-            let duration = moment.duration(lastLog[0].timestamp - firstLog[0].timestamp);
-    
-            session.dataValues.startDate = firstLog[0].timestamp;
-            session.dataValues.endDate = lastLog[0].timestamp;
-            session.dataValues.duration = duration.format('D [day] HH [hour] mm [minute] ss [second]');
+            if (firstLog.length && lastLog.length) {
+                let duration = moment.duration(lastLog[0].timestamp - firstLog[0].timestamp);
+                let days = Math.floor(duration.asDays());
+                let hours = duration.hours();
+                let minutes = duration.minutes();
+                let seconds = duration.seconds();
+
+                const isPt = lang === 'pt-br';
+                let parts = [];
+                if (days > 0) {
+                    parts.push(days + " " + (isPt ? (days === 1 ? "dia" : "dias") : (days === 1 ? "day" : "days")));
+                }
+                if (hours > 0 || days > 0) {
+                    parts.push(hours + " " + (isPt ? (hours === 1 ? "hora" : "horas") : (hours === 1 ? "hour" : "hours")));
+                }
+                let padMin = String(minutes).padStart(2, '0');
+                parts.push(padMin + " " + (isPt ? (minutes === 1 ? "minuto" : "minutos") : (minutes === 1 ? "minute" : "minutes")));
+                let padSec = String(seconds).padStart(2, '0');
+                parts.push(padSec + " " + (isPt ? (seconds === 1 ? "segundo" : "segundos") : (seconds === 1 ? "second" : "seconds")));
+                
+                session.dataValues.startDate = firstLog[0].timestamp;
+                session.dataValues.endDate = lastLog[0].timestamp;
+                session.dataValues.duration = parts.join(" ");
+            }
         }
     }
     else {
@@ -533,11 +552,30 @@ async function addStartEndData(sessions) {
             },
             order: [ [ 'timestamp', 'DESC' ]],
         });
-        let duration = moment.duration(lastLog[0].timestamp - firstLog[0].timestamp);
+        if (firstLog.length && lastLog.length) {
+            let duration = moment.duration(lastLog[0].timestamp - firstLog[0].timestamp);
+            let days = Math.floor(duration.asDays());
+            let hours = duration.hours();
+            let minutes = duration.minutes();
+            let seconds = duration.seconds();
 
-        sessions.dataValues.startDate = firstLog[0].timestamp;
-        sessions.dataValues.endDate = lastLog[0].timestamp;
-        sessions.dataValues.duration = duration.format('D [day] HH [hour] mm [minute] ss [second]');
+            const isPt = lang === 'pt-br';
+            let parts = [];
+            if (days > 0) {
+                parts.push(days + " " + (isPt ? (days === 1 ? "dia" : "dias") : (days === 1 ? "day" : "days")));
+            }
+            if (hours > 0 || days > 0) {
+                parts.push(hours + " " + (isPt ? (hours === 1 ? "hora" : "horas") : (hours === 1 ? "hour" : "hours")));
+            }
+            let padMin = String(minutes).padStart(2, '0');
+            parts.push(padMin + " " + (isPt ? (minutes === 1 ? "minuto" : "minutos") : (minutes === 1 ? "minute" : "minutes")));
+            let padSec = String(seconds).padStart(2, '0');
+            parts.push(padSec + " " + (isPt ? (seconds === 1 ? "segundo" : "segundos") : (seconds === 1 ? "second" : "seconds")));
+            
+            sessions.dataValues.startDate = firstLog[0].timestamp;
+            sessions.dataValues.endDate = lastLog[0].timestamp;
+            sessions.dataValues.duration = parts.join(" ");
+        }
     }
 }
 

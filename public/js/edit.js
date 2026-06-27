@@ -63,6 +63,17 @@ let editModule = {
             "bLengthChange": false,
             "pageLength": 5,
             responsive: true,
+            language: {
+                search: window.__("Search") + ":",
+                info: window.__("Showing _START_ to _END_ of _TOTAL_ entries"),
+                infoEmpty: window.__("Showing 0 to 0 of 0 entries"),
+                infoFiltered: "(" + window.__("filtered from _MAX_ total entries") + ")",
+                zeroRecords: window.__("No matching records found"),
+                paginate: {
+                    previous: window.__("Previous"),
+                    next: window.__("Next")
+                }
+            },
             ajax: {
                 url: '/api/sessions',
                 dataSrc: function (json) {
@@ -94,7 +105,7 @@ let editModule = {
                 {
                     // puts buttons in the last column
                     targets: [-1], render: function (data, type, row, meta) {
-                        return `<button class="btn btn-primary m-2" data-dismiss="modal" onclick="editModule.selectJoinSession(${data.id})">Select</button>`
+                        return `<button class="btn btn-primary m-2" data-dismiss="modal" onclick="editModule.selectJoinSession(${data.id})">${window.__("Select")}</button>`
                     }
             }],
         });

@@ -61,12 +61,12 @@ let MapViewModule = {
             $('body').append(`
                 <div id="multiplierPopup" class="card shadow p-2" style="position: absolute; display: none; z-index: 10000; width: 220px; border: 1px solid rgba(0,0,0,0.15); background-color: #fff;">
                   <div class="card-body p-2">
-                    <h6 class="card-title font-weight-bold mb-2 text-center" style="font-size: 13px; color: var(--primary-color);">Graph Scale</h6>
+                    <h6 class="card-title font-weight-bold mb-2 text-center" style="font-size: 13px; color: var(--primary-color);">${window.__("Graph Scale")}</h6>
                     <input type="range" id="popMultiplierSlider" min="-30" max="20" step="1" class="form-control-range w-100">
                     <div class="text-center font-weight-bold mt-1 text-primary" style="font-size: 15px;"><span id="popSliderValue">1x</span></div>
                     <div class="d-flex justify-content-between mt-2">
-                      <button id="btnPopCancel" class="btn btn-sm btn-secondary py-1 px-2" style="font-size: 11px;">Cancel</button>
-                      <button id="btnPopApply" class="btn btn-sm btn-primary py-1 px-2" style="font-size: 11px;">Apply</button>
+                      <button id="btnPopCancel" class="btn btn-sm btn-secondary py-1 px-2" style="font-size: 11px;">${window.__("Cancel")}</button>
+                      <button id="btnPopApply" class="btn btn-sm btn-primary py-1 px-2" style="font-size: 11px;">${window.__("Apply")}</button>
                     </div>
                   </div>
                 </div>
@@ -81,6 +81,17 @@ let MapViewModule = {
             "bLengthChange": false,
             "pageLength": 5,
             responsive: true,
+            language: {
+                search: window.__("Search") + ":",
+                info: window.__("Showing _START_ to _END_ of _TOTAL_ entries"),
+                infoEmpty: window.__("Showing 0 to 0 of 0 entries"),
+                infoFiltered: "(" + window.__("filtered from _MAX_ total entries") + ")",
+                zeroRecords: window.__("No matching records found"),
+                paginate: {
+                    previous: window.__("Previous"),
+                    next: window.__("Next")
+                }
+            },
             ajax: {
                 url: `/api/sessions/shared/${this.shareId}`,
                 dataSrc: function (json) {
@@ -112,7 +123,7 @@ let MapViewModule = {
                 {
                     // put select button in the last column
                     targets: [-1], render: function (data, type, row, meta) {
-                        return `<button class="btn btn-primary m-2" onclick="MapViewModule.selectSession(${data.id})">Select</button>`
+                        return `<button class="btn btn-primary m-2" onclick="MapViewModule.selectSession(${data.id})">${window.__("Select")}</button>`
                     }
             }],
             order: [ 1, "desc" ],
@@ -210,8 +221,8 @@ let MapViewModule = {
         let valueSet = [...new Set([].concat(...allValues))];
         valueSet.forEach(pid => {
             // Add option
-            this.$pidSelectMap.append(`<option >${pid}</option>`)
-            this.$pidSelectChart.append(`<option>${pid}</option>`)
+            this.$pidSelectMap.append(`<option value="${pid}">${window.__ (pid)}</option>`)
+            this.$pidSelectChart.append(`<option value="${pid}">${window.__ (pid)}</option>`)
             
         });
         // select Speed (OBD) by default, or fallback to first option
@@ -260,7 +271,14 @@ let MapViewModule = {
                         let value = tooltipItem.yLabel;
                         
                         let self = MapViewModule;
-                        let m = self.multipliers[datasetLabel] || 1;
+                        
+                        // Find original PID from datasetLabel (which is translated)
+                        let option = self.$pidSelectChart.find('option').filter(function() {
+                            return $(this).text() === datasetLabel;
+                        });
+                        let originalPid = option.val() || datasetLabel;
+                        
+                        let m = self.multipliers[originalPid] || 1;
                         let valFloat = parseFloat(value);
                         if (!isNaN(valFloat)) {
                             let originalValue = (valFloat / m).toFixed(2);
@@ -380,7 +398,7 @@ let MapViewModule = {
                 }
             });
             let dataset = {
-                label: pid,
+                label: window.__ (pid),
                 fill: false,
                 pointHoverRadius: 5,
                 data: data
@@ -430,9 +448,15 @@ let MapViewModule = {
             let rawText = textSpan.text();
             let pidName = rawText.replace(/\s*\(x[0-9.]+\)$/, '').trim();
             
-            let m = self.multipliers[pidName] || 1;
+            // Find the original PID name from the select options
+            let option = self.$pidSelectChart.find('option').filter(function() {
+                return $(this).text() === pidName;
+            });
+            let originalPid = option.val() || pidName;
+            
+            let m = self.multipliers[originalPid] || 1;
             let displayVal = m < 1 ? m.toFixed(2) : m;
-            textSpan.html(`${pidName} <a href="#" class="pid-multiplier-link text-primary font-weight-bold ml-1" data-pid="${pidName}" style="text-decoration: underline;">(x${displayVal})</a>`);
+            textSpan.html(`${pidName} <a href="#" class="pid-multiplier-link text-primary font-weight-bold ml-1" data-pid="${originalPid}" data-display-name="${pidName}" style="text-decoration: underline;">(x${displayVal})</a>`);
         });
 
         chosenContainer.find('.pid-multiplier-link').off('click').on('click', function(e) {

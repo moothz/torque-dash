@@ -35,8 +35,8 @@ class Map {
         this.pathLayer = L.layerGroup().addTo(this.map);
         
         let overlayLayers = {
-            'Markers': this.markerLayer,
-            'Path': this.pathLayer
+            [window.__('Markers')]: this.markerLayer,
+            [window.__('Path')]: this.pathLayer
         }
         
         // Add base tile layer controls
@@ -79,19 +79,19 @@ class ViewMap extends Map {
                 // <div id="sessionName" class="badge badge-light p-2 w-100 mb-2">No session selected</div>
 
                 let sessionName = L.DomUtil.create('div', 'badge badge-light p-2 custom-map-control my-1 w-100 font-weight-bold text-uppercase');
-                sessionName.innerText = 'No session selected';
+                sessionName.innerText = window.__('No session selected');
                 sessionName.id = 'sessionName';
 
                 let sessionSelect = L.DomUtil.create('button', 'btn btn-light custom-map-control my-1 w-100 ');
                 sessionSelect.id = 'sessionSelectButton';
                 sessionSelect.dataset.toggle = 'modal';   
                 sessionSelect.dataset.target = '#selectSessionModal';
-                sessionSelect.innerText = 'Select Session';
+                sessionSelect.innerText = window.__('Select Session');
 
                 let pidSelect = L.DomUtil.create('select', 'form-input btn btn-light chosen-select custom-map-control my-1 w-100');
                 pidSelect.id = 'pidSelectMap';
                 pidSelect['data-live-search'] = 'true';   
-                pidSelect.title = 'Select PID';
+                pidSelect.title = window.__('Select PID');
 
                 let liveDiv = L.DomUtil.create('div', 'my-1 ml-1');
                 let liveIndicator = L.DomUtil.create('span', 'badge badge-danger p-2 d-none');

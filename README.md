@@ -28,8 +28,17 @@ This repository is a modernized fork of the original torque-dash project, update
   - Changed the default map provider to **CartoDB Voyager** to guarantee a working, high-performance base map.
   - Excluded broken map layer providers (Wikimedia and Open Map Surfer Roads) from the interface.
   - Added an **Eye Icon link** in the Overview table next to each session name, taking you directly to that session in the **Map View**.
-  - Configured **Map View** to load a specific session automatically if passed as a `session` query parameter (e.g., `/mapview?session=12`).
+  - Configured **Data View** to load a specific session automatically if passed as a `session` query parameter (e.g., `/mapview?session=12`).
   - Set the default selected telemetry parameter on the map to `"Speed (OBD)"` when available.
+- **Bi-Directional Chart Scaling Multipliers**:
+  - Allows applying scaling factors (from `0.03x` up to `20x`, skipping `0`) directly to telemetry lines in the chart using an interactive slider popover.
+  - Automatically remembers chosen multipliers and active PID selections across sessions using cookies.
+  - Keeps chart tooltips clean by displaying only the original, unscaled telemetry values.
+- **Internationalization & Localization (i18n)**:
+  - Adds full support for **English** and **Português (BR)**, with translation dictionaries defined in simple JSON files.
+  - Features a global language selector dropdown in the top navigation bar, persisting the chosen preference in the session.
+  - Utilizes a robust client-side translation helper that dynamically strips unit suffixes and OBD/ECU prefixes case-insensitively for clean PID name display.
+  - Standardized interface terminology, renaming "Map View" / "Visualização do Mapa" to "Data View" / "Ver Dados" for improved clarity.
 
 ---
 

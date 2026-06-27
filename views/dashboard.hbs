@@ -6,12 +6,12 @@
         <table class="table table-curved table-striped table-bordered dt-responsive display nowrap" id="logTable" style="width:100%">
             <thead class="table-primary text-center">
                 <tr>
-                    <th>Name</th>
-                    <th>Started</th>
-                    <th>Ended</th>
-                    <th>Duration</th>
-                    <th>Starting Location</th>
-                    <th>End Location</th>
+                    <th>{{__ "Name"}}</th>
+                    <th>{{__ "Started"}}</th>
+                    <th>{{__ "Ended"}}</th>
+                    <th>{{__ "Duration"}}</th>
+                    <th>{{__ "Starting Location"}}</th>
+                    <th>{{__ "End Location"}}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -25,15 +25,15 @@
                         <div class="icon-box">
                             <i class="fas fa-trash"></i>
                         </div>
-                        <h4 class="modal-title mx-auto">Are you sure?</h4>	
+                        <h4 class="modal-title mx-auto">{{__ "Are you sure?"}}</h4>	
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <p>Do you really want to delete this session? This action cannot be undone.</p>
+                        <p>{{__ "Do you really want to delete this session? This action cannot be undone."}}</p>
                     </div>
                     <div class="modal-footer mx-auto">
-                        <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-                        <button type="button" id="modalDeleteButton" class="btn btn-danger" data-dismiss="modal">Delete</a>
+                        <button type="button" class="btn btn-info" data-dismiss="modal">{{__ "Cancel"}}</button>
+                        <button type="button" id="modalDeleteButton" class="btn btn-danger" data-dismiss="modal">{{__ "Delete"}}</button>
                     </div>
                 </div>
             </div>
@@ -44,39 +44,39 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content p-3">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="importCSVModalLabel"><i class="fas fa-file-import mr-2 text-primary"></i>Import Log CSV (Torque Pro)</h5>
+                        <h5 class="modal-title" id="importCSVModalLabel"><i class="fas fa-file-import mr-2 text-primary"></i>{{__ "Import Log CSV (Torque Pro)"}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <label for="importSessionName" class="font-weight-bold">Session Name</label>
-                            <input type="text" class="form-control" id="importSessionName" placeholder="Enter session name (e.g. trackLog-2026-Jun-27)">
+                            <label for="importSessionName" class="font-weight-bold">{{__ "Session Name"}}</label>
+                            <input type="text" class="form-control" id="importSessionName" placeholder="{{__ "Enter session name (e.g. trackLog-2026-Jun-27)"}}">
                         </div>
                         
                         <!-- Drag and Drop Zone -->
                         <div id="dropZone" class="drop-zone p-4 mb-3 border dashed rounded text-center bg-light cursor-pointer" style="border: 2px dashed #007bff !important; transition: all 0.3s ease;">
                             <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i>
-                            <p class="mb-1 font-weight-bold">Drag & drop CSV file here or click to select</p>
-                            <span class="text-muted small">Only CSV files from Torque Pro logs</span>
+                            <p class="mb-1 font-weight-bold">{{__ "Drag & drop CSV file here or click to select"}}</p>
+                            <span class="text-muted small">{{__ "Only CSV files from Torque Pro logs"}}</span>
                         </div>
                         <input type="file" id="csvFileInput" accept=".csv" class="d-none">
 
                         <!-- Preview Area (hidden by default) -->
                         <div id="previewArea" style="display: none;">
-                            <h6 class="font-weight-bold mb-2"><i class="fas fa-clipboard-check text-success mr-1"></i>Column Verification:</h6>
+                            <h6 class="font-weight-bold mb-2"><i class="fas fa-clipboard-check text-success mr-1"></i>{{__ "Column Verification:"}}</h6>
                             <div class="d-flex mb-3 gap-3 flex-wrap">
-                                <span class="badge badge-secondary p-2 mr-2" id="badgeTime"><i class="fas fa-times mr-1"></i>Time (Device/GPS Time)</span>
-                                <span class="badge badge-secondary p-2 mr-2" id="badgeLat"><i class="fas fa-times mr-1"></i>Latitude</span>
-                                <span class="badge badge-secondary p-2 mr-2" id="badgeLon"><i class="fas fa-times mr-1"></i>Longitude</span>
+                                <span class="badge badge-secondary p-2 mr-2" id="badgeTime"><i class="fas fa-times mr-1"></i>{{__ "Time (Device/GPS Time)"}}</span>
+                                <span class="badge badge-secondary p-2 mr-2" id="badgeLat"><i class="fas fa-times mr-1"></i>{{__ "Latitude"}}</span>
+                                <span class="badge badge-secondary p-2 mr-2" id="badgeLon"><i class="fas fa-times mr-1"></i>{{__ "Longitude"}}</span>
                             </div>
 
                             <div class="alert alert-danger mb-3" id="validationError" style="display: none;">
-                                <i class="fas fa-exclamation-triangle mr-1"></i> <span id="validationErrorText">The selected file does not contain the required columns.</span>
+                                <i class="fas fa-exclamation-triangle mr-1"></i> <span id="validationErrorText">{{__ "The selected file does not contain the required columns."}}</span>
                             </div>
 
-                            <h6 class="font-weight-bold mb-2"><i class="fas fa-eye text-info mr-1"></i>Preview (First Rows):</h6>
+                            <h6 class="font-weight-bold mb-2"><i class="fas fa-eye text-info mr-1"></i>{{__ "Preview (First Rows):"}}</h6>
                             <div class="table-responsive" style="max-height: 250px;">
                                 <table class="table table-sm table-striped table-bordered text-center" id="previewTable" style="font-size: 13px;">
                                     <thead class="bg-light">
@@ -89,8 +89,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" id="btnSubmitImport" class="btn btn-primary" disabled><i class="fas fa-file-upload mr-1"></i>Import</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__ "Cancel"}}</button>
+                        <button type="button" id="btnSubmitImport" class="btn btn-primary" disabled><i class="fas fa-file-upload mr-1"></i>{{__ "Import"}}</button>
                     </div>
                 </div>
             </div>

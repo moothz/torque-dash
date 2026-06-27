@@ -5,29 +5,29 @@
         <div class="row h-100 no-gutters">
             <div class="col-md-4 p-3">
                 <div class="card border-light bg-light mb-3 session-info-card">
-                    <div class="card-header bg-primary text-light"><strong>Session</strong>: <span id="sessionInfoName"></span></div>
+                    <div class="card-header bg-primary text-light"><strong>{{__ "Session"}}</strong>: <span id="sessionInfoName"></span></div>
                     <div class="card-body">
                         <ul>
-                            <li><strong>Started</strong>: <span id="sessionInfoStartDate"></span></li>
-                            <li><strong>Ended</strong>: <span id="sessionInfoEndDate"></span></li>
-                            <li><strong>Duration</strong>: <span id="sessionInfoDuration"></span></li>
-                            <li><strong>Start Location</strong>: <span id="sessionInfoStartLocation"></span></li>
-                            <li><strong>End Location</strong>: <span id="sessionInfoEndLocation"></span></li>
+                            <li><strong>{{__ "Started"}}</strong>: <span id="sessionInfoStartDate"></span></li>
+                            <li><strong>{{__ "Ended"}}</strong>: <span id="sessionInfoEndDate"></span></li>
+                            <li><strong>{{__ "Duration"}}</strong>: <span id="sessionInfoDuration"></span></li>
+                            <li><strong>{{__ "Starting Location"}}</strong>: <span id="sessionInfoStartLocation"></span></li>
+                            <li><strong>{{__ "End Location"}}</strong>: <span id="sessionInfoEndLocation"></span></li>
                         </ul>
                     </div>
                 </div>
                 <div class="btn-group-vertical w-100">
-                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#renameSessionModal">Rename session</button>
-                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#locationModal">Add start/end location</button>
+                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#renameSessionModal">{{__ "Rename session"}}</button>
+                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#locationModal">{{__ "Add start/end location"}}</button>
                     <div class="my-1"></div>
-                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#copySessionModal">Copy session</button>
-                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#deleteSessionModal">Delete session</button>
+                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#copySessionModal">{{__ "Copy session"}}</button>
+                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#deleteSessionModal">{{__ "Delete session"}}</button>
                     <div class="my-1"></div>
-                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#filterSessionModal">Filter session</button>
-                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#cutSessionModal">Cut selection</button>
+                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#filterSessionModal">{{__ "Filter session"}}</button>
+                    <button class="btn btn-light my-1" data-toggle="modal" data-target="#cutSessionModal">{{__ "Cut selection"}}</button>
                     <div class="btn-group">
-                        <button class="btn btn-light m-1 w-50" data-toggle="modal" data-target="#selectJoinSessionModal">Select join session</button>
-                        <button id="joinButton" class="btn btn-light m-1 w-50" data-toggle="modal" data-target="#confirmJoinSessionModal" disabled="true">Join sessions</button>
+                        <button class="btn btn-light m-1 w-50" data-toggle="modal" data-target="#selectJoinSessionModal">{{__ "Select join session"}}</button>
+                        <button id="joinButton" class="btn btn-light m-1 w-50" data-toggle="modal" data-target="#confirmJoinSessionModal" disabled="true">{{__ "Join sessions"}}</button>
                     </div>
                 </div>
             
@@ -51,14 +51,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                Rename Session
+                {{__ "Rename session"}}
             </div>
             <div class="modal-body">
                 <input type="text" class="form-control" name="sessionName" id="renameInput">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="renameSessionModalButton" class="btn btn-primary" data-dismiss="modal">Rename</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__ "Cancel"}}</button>
+                <button type="button" id="renameSessionModalButton" class="btn btn-primary" data-dismiss="modal">{{__ "Rename"}}</button>
             </div>
         </div>
     </div>
@@ -67,22 +67,22 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                Add locations
+                {{__ "Add start/end locations"}}
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="startLocation">Start Location:</label>
+                    <label for="startLocation">{{__ "Starting Location"}}:</label>
                     <input type="text" class="form-control" name="startLocation" id="startLocationInput">
                 </div>
                 <div class="form-group">
-                    <label for="startLocation">End Location:</label>
+                    <label for="startLocation">{{__ "End Location"}}:</label>
                     <input type="text" class="form-control" name="endLocation" id="endLocationInput">
                 </div>
-                <button id="getGeocodeLocationButton" class="btn btn-primary">Get geocoded locations</button>
+                <button id="getGeocodeLocationButton" class="btn btn-primary">{{__ "Get address (needs MapQuest api key configured)"}}</button>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="addLocationsButton" class="btn btn-primary" data-dismiss="modal">Add locations</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__ "Cancel"}}</button>
+                <button type="button" id="addLocationsButton" class="btn btn-primary" data-dismiss="modal">{{__ "Save"}}</button>
             </div>
         </div>
     </div>
@@ -91,15 +91,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                Copy Session
+                {{__ "Copy session"}}
             </div>
             <div class="modal-body">
-                <label for="copyName">Copy Name:</label>
+                <label for="copyName">{{__ "New Name"}}:</label>
                 <input type="text" class="form-control" name="copyName" id="copyNameInput">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="copySessionModalButton" class="btn btn-primary" data-dismiss="modal">Copy</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__ "Cancel"}}</button>
+                <button type="button" id="copySessionModalButton" class="btn btn-primary" data-dismiss="modal">{{__ "Copy"}}</button>
             </div>
         </div>
     </div>
@@ -111,15 +111,15 @@
                         <div class="icon-box">
                             <i class="fas fa-trash"></i>
                         </div>
-                        <h4 class="modal-title mx-auto">Are you sure?</h4>	
+                        <h4 class="modal-title mx-auto">{{__ "Are you sure?"}}</h4>	
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <p>Do you really want to delete this session? This action cannot be undone.</p>
+                        <p>{{__ "Do you really want to delete this session? This action cannot be undone."}}</p>
                     </div>
                     <div class="modal-footer mx-auto">
-                        <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-                        <button type="button" id="deleteSessionModalButton" class="btn btn-danger">Delete</a>
+                        <button type="button" class="btn btn-info" data-dismiss="modal">{{__ "Cancel"}}</button>
+                        <button type="button" id="deleteSessionModalButton" class="btn btn-danger" data-dismiss="modal">{{__ "Delete"}}</button>
                     </div>
                 </div>
             </div>
@@ -128,15 +128,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                Filter every n-th log
+                {{__ "Filter every n-th log"}}
             </div>
             <div class="modal-body">
                 <h3 for="filterNumber" class="text-center my-2"><span id="filterNumberLabel">2</span></h3>
                 <input type="range" class="custom-range" id="filterNumberSlider" min="2" max="10" value="2">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="filterSessionModalButton" class="btn btn-primary" data-dismiss="modal">Filter</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__ "Cancel"}}</button>
+                <button type="button" id="filterSessionModalButton" class="btn btn-primary" data-dismiss="modal">{{__ "Filter"}}</button>
             </div>
         </div>
     </div>
@@ -145,14 +145,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                Cut selected logs from session
+                {{__ "Cut selected logs from session"}}
             </div>
             <div class="modal-body">
                 <p class="text-center" id="cutMessage"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="cutSessionModalButton" class="btn btn-primary" data-dismiss="modal">Cut</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__ "Cancel"}}</button>
+                <button type="button" id="cutSessionModalButton" class="btn btn-primary" data-dismiss="modal">{{__ "Cut"}}</button>
             </div>
         </div>
     </div>
@@ -161,19 +161,19 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                Select a session
+                {{__ "Select a session"}}
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
         <table class="table table-curved table-striped table-bordered dt-responsive display nowrap" id="logTable" style="width:100%">
             <thead class="table-primary text-center">
                 <tr>
-                    <th>Name</th>
-                    <th>Started</th>
-                    <th>Ended</th>
-                    <th>Duration</th>
-                    <th>Starting Location</th>
-                    <th>End Location</th>
+                    <th>{{__ "Name"}}</th>
+                    <th>{{__ "Started"}}</th>
+                    <th>{{__ "Ended"}}</th>
+                    <th>{{__ "Duration"}}</th>
+                    <th>{{__ "Starting Location"}}</th>
+                    <th>{{__ "End Location"}}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -184,7 +184,7 @@
         </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__ "Cancel"}}</button>
             </div>
         </div>
     </div>
@@ -193,16 +193,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                Confirmation
+                {{__ "Confirmation"}}
             </div>
             <div class="modal-body">
-                Join sessions?
-                <label for="copyName">Joined Name:</label>
+                {{__ "Join sessions?"}}
+                <label for="copyName">{{__ "Joined Name:"}}</label>
                 <input type="text" class="form-control" name="joinedName" id="joinedNameInput">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="joinSessionModalButton" class="btn btn-primary" data-dismiss="modal">Join</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__ "Cancel"}}</button>
+                <button type="button" id="joinSessionModalButton" class="btn btn-primary" data-dismiss="modal">{{__ "Join"}}</button>
             </div>
         </div>
     </div>
