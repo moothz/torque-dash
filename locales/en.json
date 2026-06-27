@@ -115,5 +115,20 @@
   "Volumetric Efficiency (Calculated)(%)": "Volumetric Efficiency (Calculated)(%)",
   "Volumetric Efficiency (Calculated)": "Volumetric Efficiency (Calculated)",
   "Kilometers Per Litre(Long Term Average)(kpl)": "Kilometers Per Litre (Long Term Average)(kpl)",
-  "Kilometers Per Litre(Long Term Average)": "Kilometers Per Litre (Long Term Average)"
+  "Kilometers Per Litre(Long Term Average)": "Kilometers Per Litre (Long Term Average)",
+  "Welcome": "Welcome",
+  "Please log in to continue": "Please log in to continue",
+  "E-mail": "E-mail",
+  "Password": "Password",
+  "Whoops!": "Whoops!",
+  "Log in": "Log in",
+  "Don't have an account yet?": "Don't have an account yet?",
+  "Register": "Register",
+  "Please create an account to continue": "Please create an account to continue",
+  "Confirm Password": "Confirm Password",
+  "Create Account": "Create Account",
+  "Already have an account?": "Already have an account?",
+  "Incorrect username or password.": "Incorrect username or password.",
+  "You have been logged out.": "You have been logged out.",
+  "Account created. You may now log in.": "Account created. You may now log in."
 }

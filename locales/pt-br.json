@@ -154,5 +154,20 @@
   "Volumetric Efficiency (Calculated)(%)": "Eficiência Volumétrica (Calculada) (%)",
   "Volumetric Efficiency (Calculated)": "Eficiência Volumétrica (Calculada)",
   "Kilometers Per Litre(Long Term Average)(kpl)": "Quilômetros por Litro (Média de Longo Prazo) (kpl)",
-  "Kilometers Per Litre(Long Term Average)": "Quilômetros por Litro (Média de Longo Prazo)"
+  "Kilometers Per Litre(Long Term Average)": "Quilômetros por Litro (Média de Longo Prazo)",
+  "Welcome": "Bem-vindo",
+  "Please log in to continue": "Por favor faça login para continuar",
+  "E-mail": "E-mail",
+  "Password": "Senha",
+  "Whoops!": "Ops!",
+  "Log in": "Entrar",
+  "Don't have an account yet?": "Ainda não tem uma conta?",
+  "Register": "Cadastrar-se",
+  "Please create an account to continue": "Por favor crie uma conta para continuar",
+  "Confirm Password": "Confirmar Senha",
+  "Create Account": "Criar Conta",
+  "Already have an account?": "Já tem uma conta?",
+  "Incorrect username or password.": "E-mail ou senha incorretos.",
+  "You have been logged out.": "Você foi deslogado com sucesso.",
+  "Account created. You may now log in.": "Conta criada com sucesso. Você já pode se logar."
 }
