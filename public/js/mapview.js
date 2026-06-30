@@ -205,11 +205,11 @@ let MapViewModule = {
         this.$selectSessionModal.modal('hide');
         this.currentSession = this.sessions.find(session => session.id == id);
         this.$sessionName.text(this.currentSession.name);
-        this.updatePidSelect(this.currentSession);
-        this.map.drawSession(this.currentSession);
         let timestamps = this.currentSession.Logs.map(log => moment(log.timestamp).format("HH:mm:ss"));
         if(this.chart) this.chart.destroy();
         this.createChart(timestamps);
+        this.updatePidSelect(this.currentSession);
+        this.map.drawSession(this.currentSession);
         // If session end is less than 60 seconds from now, turn on updating (expect active session)
         if( moment().diff(moment(this.currentSession.endDate), 'seconds') < 60  ) {
             this.toggleUpdateData();
